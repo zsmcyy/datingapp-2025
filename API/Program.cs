@@ -12,10 +12,17 @@ builder.Services.AddDbContext<AppDbContext>(opt=>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddCors();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors(x =>
+{
+    // 允许任何请求头，允许任何请求方法，指定允许的来源
+    x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200");
+});
+
 app.MapControllers();
 
 app.Run();
